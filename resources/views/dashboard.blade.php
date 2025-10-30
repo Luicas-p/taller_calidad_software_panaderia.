@@ -13,7 +13,7 @@
             <div class="col-md-4">
                 <div class="card shadow p-4 text-center border-0" style="border-radius: 20px;">
                     <h4 class="mb-3">Productos</h4>
-                    <a href="{{ route('productos.index') }}" 
+                    <a href="{{ route('productos.index') }}"
                        class="btn btn-dorado mt-2 px-4 py-2"
                        style="background-color: #000; color: #fff; border-radius: 10px; transition: 0.3s;">
                        Gestionar
@@ -25,7 +25,7 @@
             <div class="col-md-4">
                 <div class="card shadow p-4 text-center border-0" style="border-radius: 20px;">
                     <h4 class="mb-3">Tipo de Producto</h4>
-                    <a href="{{ route('tipoproductos.index') }}" 
+                    <a href="{{ route('tipoproductos.index') }}"
                        class="btn btn-dorado mt-2 px-4 py-2"
                        style="background-color: #000; color: #fff; border-radius: 10px; transition: 0.3s;">
                        Ver Categorías

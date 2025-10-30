@@ -52,3 +52,38 @@ class AuthenticationTest extends TestCase
         $response->assertRedirect('/');
     }
 }
+class LoginTest extends TestCase
+{
+    private const LOGIN_ROUTE = '/login';
+
+    public function test_login_page_is_accessible()
+    {
+        $response = $this->get(self::LOGIN_ROUTE);
+        $response->assertStatus(200);
+    }
+
+    public function test_login_redirects_authenticated_user()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $response = $this->get(self::LOGIN_ROUTE);
+        $response->assertRedirect('/home');
+    }
+}
+class ConfirmPasswordTest extends TestCase
+{
+    private const CONFIRM_PASSWORD_ROUTE = '/confirm-password';
+
+    public function test_confirm_password_page_is_accessible()
+    {
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->get(self::CONFIRM_PASSWORD_ROUTE);
+        $response->assertStatus(200);
+    }
+
+    public function test_confirm_password_redirects_guest()
+    {
+        $response = $this->get(self::CONFIRM_PASSWORD_ROUTE);
+        $response->assertRedirect('/login');
+    }
+}
