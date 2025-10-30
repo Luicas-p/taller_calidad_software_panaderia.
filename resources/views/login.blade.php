@@ -63,11 +63,11 @@
         <form method="POST" action="{{ route('login.post') }}">
             @csrf
             <div class="mb-3">
-                <label class="form-label">Usuario</label>
+                <label for="usuario" class="form-label">Usuario</label>
                 <input type="text" class="form-control" placeholder="Ingrese su usuario">
             </div>
             <div class="mb-3">
-                <label class="form-label">Contraseña</label>
+                <label for="contraseña" class="form-label">Contraseña</label>
                 <input type="password" class="form-control" placeholder="Ingrese su contraseña">
             </div>
             <button class="btn btn-dorado w-100">Entrar</button>
