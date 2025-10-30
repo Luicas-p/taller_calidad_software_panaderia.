@@ -55,6 +55,7 @@ class AuthenticationTest extends TestCase
 class LoginTest extends TestCase
 {
     private const LOGIN_ROUTE = '/login';
+    private const HOME_ROUTE = '/home';
 
     public function test_login_page_is_accessible()
     {
@@ -67,12 +68,14 @@ class LoginTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
         $response = $this->get(self::LOGIN_ROUTE);
-        $response->assertRedirect('/home');
+        $response->assertRedirect(self::HOME_ROUTE);
     }
 }
+
 class ConfirmPasswordTest extends TestCase
 {
     private const CONFIRM_PASSWORD_ROUTE = '/confirm-password';
+    private const LOGIN_ROUTE = '/login';
 
     public function test_confirm_password_page_is_accessible()
     {
@@ -84,6 +87,70 @@ class ConfirmPasswordTest extends TestCase
     public function test_confirm_password_redirects_guest()
     {
         $response = $this->get(self::CONFIRM_PASSWORD_ROUTE);
-        $response->assertRedirect('/login');
+        $response->assertRedirect(self::LOGIN_ROUTE);
+    }
+}
+class ForgotPasswordTest extends TestCase
+{
+    use RefreshDatabase;
+
+    // Definimos la constante de la ruta
+    private const FORGOT_PASSWORD_ROUTE = '/forgot-password';
+
+    public function test_forgot_password_page_is_accessible()
+    {
+        $response = $this->get(self::FORGOT_PASSWORD_ROUTE);
+        $response->assertStatus(200);
+    }
+
+    public function test_forgot_password_redirects_authenticated_user()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $response = $this->get(self::FORGOT_PASSWORD_ROUTE);
+        $response->assertRedirect('/home');
+    }
+}
+class ProfileTest extends TestCase
+{
+    use RefreshDatabase;
+
+    // Constante para la ruta /profile
+    private const PROFILE_ROUTE = '/profile';
+
+    public function test_profile_page_is_accessible()
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->get(self::PROFILE_ROUTE);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_redirects_to_profile_after_update()
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->post(self::PROFILE_ROUTE, [
+                'name' => 'Nuevo Nombre',
+                'email' => $user->email,
+            ]);
+
+        $response->assertRedirect(self::PROFILE_ROUTE);
+    }
+
+    public function test_profile_edit_page_is_accessible()
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->get(self::PROFILE_ROUTE . '/edit');
+
+        $response->assertStatus(200);
     }
 }
